@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progresión 15: El Sol, Flujo de Energía y Sistemas de la Tierra</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --primary-light: #e0e7ff;
+            --secondary: #0284c7;
+            --secondary-light: #e0f2fe;
+            --accent: #059669;
+            --accent-light: #d1fae5;
+            --warning: #d97706;
+            --warning-light: #fef3c7;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border: #cbd5e1;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.55;
+            padding-bottom: 40px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .header-subtitle {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #c7d2fe;
+            font-weight: 700;
+        }
+
+        .header-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: #34d399;
+            transition: width 0.3s ease;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            margin-top: 4px;
+            color: #e0e7ff;
+            font-weight: 600;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto 0;
+            padding: 0 16px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+
+        h2 {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        h3 {
+            color: var(--secondary);
+            font-size: 1.05rem;
+            margin: 16px 0 10px;
+        }
+
+        p {
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .micro-read {
+            background-color: #f1f5f9;
+            border-left: 4px solid var(--primary);
+            padding: 14px 16px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin: 14px 0;
+            font-size: 0.95rem;
+        }
+
+        .micro-read strong {
+            color: var(--primary-dark);
+        }
+
+        /* COMPONENTE DE FÓRMULAS QUÍMICAS / FÍSICAS NATIVAS SIN LATEX */
+        .math-block {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            text-align: center;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin: 12px 0;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
+        }
+
+        .frac-box {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            text-align: center;
+            padding: 0 4px;
+            font-size: 0.95em;
+        }
+
+        .frac-box .numerator {
+            border-bottom: 2px solid currentColor;
+            padding-bottom: 2px;
+            line-height: 1.1;
+        }
+
+        .frac-box .denominator {
+            padding-top: 2px;
+            line-height: 1.1;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: var(--radius-md);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            touch-action: manipulation;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background-color: #cbd5e1;
+        }
+
+        .btn-hint {
+            background-color: var(--warning-light);
+            color: var(--warning);
+            border: 1px solid #fcd34d;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            width: auto;
+            margin-top: 8px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.88rem;
+            margin-bottom: 6px;
+            color: var(--text-muted);
+        }
+
+        .input-group input, .input-group textarea, .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            background-color: #fff;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            outline: 2px solid var(--primary);
+            border-color: transparent;
+        }
+
+        .option-card {
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+        }
+
+        .option-card.selected {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .option-card.correct {
+            border-color: var(--accent);
+            background-color: var(--accent-light);
+            color: #065f46;
+        }
+
+        .option-card.incorrect {
+            border-color: var(--danger);
+            background-color: var(--danger-light);
+            color: #991b1b;
+        }
+
+        .feedback-box {
+            padding: 14px 16px;
+            border-radius: var(--radius-sm);
+            margin-top: 12px;
+            font-size: 0.92rem;
+            display: none;
+            line-height: 1.5;
+        }
+
+        .feedback-box.show {
+            display: block;
+        }
+
+        .feedback-box.correct {
+            background-color: var(--accent-light);
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .feedback-box.incorrect {
+            background-color: var(--danger-light);
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .sim-container {
+            width: 100%;
+            background: #0f172a;
+            border-radius: var(--radius-md);
+            padding: 16px;
+            text-align: center;
+            color: white;
+            margin: 12px 0;
+            overflow: hidden;
+        }
+
+        .sim-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .sim-btn {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .sim-btn.active {
+            background: var(--primary);
+            border-color: var(--primary-light);
+        }
+
+        .matching-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .drag-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 12px;
+            background: #f1f5f9;
+            border-radius: var(--radius-sm);
+            min-height: 50px;
+            margin-bottom: 12px;
+        }
+
+        .chip {
+            background: white;
+            border: 1px solid var(--primary);
+            color: var(--primary-dark);
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            user-select: none;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .chip.selected {
+            background: var(--primary);
+            color: white;
+        }
+
+        .slot {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            font-size: 0.85rem;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .slot.filled {
+            border-style: solid;
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .slot.correct-slot {
+            border-color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .slot.incorrect-slot {
+            border-color: var(--danger);
+            background: var(--danger-light);
+        }
+
+        .quiz-nav-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .quiz-nav-btn {
+            padding: 8px 0;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: white;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .quiz-nav-btn.active {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .quiz-nav-btn.answered {
+            background: #e2e8f0;
+            color: var(--text-main);
+        }
+
+        .evidence-card {
+            background: #ffffff;
+            border: 3px solid var(--primary-dark);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .evidence-header {
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .evidence-title {
+            color: var(--primary-dark);
+            font-size: 1.3rem;
+            font-weight: 900;
+        }
+
+        .evidence-badge {
+            background: var(--accent);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        .evidence-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            text-align: left;
+            margin: 16px 0;
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+        }
+
+        .evidence-item {
+            font-size: 0.88rem;
+        }
+
+        .evidence-item label {
+            display: block;
+            font-weight: 700;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .evidence-item val {
+            font-weight: 800;
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        .compact-code {
+            background: #0f172a;
+            color: #38bdf8;
+            font-family: monospace;
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            word-break: break-all;
+            margin: 14px 0;
+            border: 1px dashed #0284c7;
+        }
+
+        .alert-whatsapp {
+            background-color: var(--accent-light);
+            color: #065f46;
+            border: 2px dashed var(--accent);
+            padding: 12px;
+            border-radius: var(--radius-md);
+            font-weight: 800;
+            font-size: 0.95rem;
+            margin-top: 16px;
+        }
+
+        .step-container {
+            display: none;
+        }
+
+        .step-container.active {
+            display: block;
+        }
+
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .system-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 14px 0;
+        }
+
+        .system-card {
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .system-card.selected {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            font-weight: bold;
+        }
+
+        .trophic-level-box {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 14px 0;
+        }
+
+        .trophic-step {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+
+        .trophic-badge {
+            background: var(--secondary-light);
+            color: var(--secondary);
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="header-subtitle">FÍSICA • APRENDIZAJE AUTÓNOMO A DISTANCIA</div>
+            <div class="header-title">PROGRESIÓN 15: El Sol, Flujo de Energía y Sistemas de la Tierra</div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="progressBar"></div>
+            </div>
+            <div class="step-indicator">
+                <span id="stepText">Inicio</span>
+                <span id="timerDisplay">Tiempo Activo: 00:00</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- STEP 0: REGISTRO -->
+        <div class="step-container active" id="step0">
+            <div class="card">
+                <h2>👋 Bienvenida y Registro</h2>
+                <p><strong>LA ENERGÍA EN LOS PROCESOS DE LA VIDA DIARIA — PROGRESIÓN 15</strong></p>
+                
+                <div class="micro-read">
+                    "En esta actividad estudiarás cómo la <strong>energía solar</strong> impulsada por la <strong>fusión nuclear</strong> en el Sol es la fuente primaria que sustenta los procesos físicos, químicos y biológicos de nuestro planeta. Analizarás la interacción entre los cuatro sistemas terrestres (<strong>Atmósfera, Hidrosfera, Geosfera y Biosfera</strong>) y comprenderás una regla fundamental de la ciencia: <strong>LA ENERGÍA FLUYE Y SE DISIPA, MIENTRAS QUE LA MATERIA CIRCULA EN CICLOS REUTILIZABLES</strong>. Trabaja a tu propio ritmo, explora las simulaciones y utiliza las pistas cuando sea necesario."
+                </div>
+
+                <div class="input-group">
+                    <label for="inputName">Nombre completo del estudiante *</label>
+                    <input type="text" id="inputName" placeholder="Ej. Ana Lucía Mendoza Pérez" autocomplete="off">
+                </div>
+
+                <div class="input-group">
+                    <label for="inputGroup">Grupo *</label>
+                    <input type="text" id="inputGroup" placeholder="Ej. 4° A" autocomplete="off">
+                </div>
+
+                <div class="micro-read" style="border-left-color: var(--accent);">
+                    📌 <strong>Trabajo Autónomo a Distancia:</strong> Tu profesor atenderá comisiones académicas. La aplicación guiará tu proceso de aprendizaje paso a paso, corregirá tus actividades de forma interactiva y registrará tu tiempo y avances sin necesidad de conexión a internet.
+                </div>
+
+                <button class="btn btn-primary" onclick="startSession()">🚀 COMENZAR MI SESIÓN</button>
+            </div>
+        </div>
+
+        <!-- STEP 1: ENGANCHA -->
+        <div class="step-container" id="step1">
+            <div class="card">
+                <h2>1. ENGANCHA: ¿Qué mueve al Planeta Tierra?</h2>
+                <p>Observa los múltiples procesos naturales que suceden simultáneamente en nuestro planeta:</p>
+
+                <div class="sim-container">
+                    <svg viewBox="0 0 400 200" width="100%" height="200">
+                        <!-- Sun emitting radiation -->
+                        <circle cx="60" cy="50" r="30" fill="#fbbf24" stroke="#f59e0b" stroke-width="3"/>
+                        <g stroke="#fbbf24" stroke-width="2" stroke-linecap="round">
+                            <line x1="60" y1="10" x2="60" y2="0"/>
+                            <line x1="60" y1="90" x2="60" y2="100"/>
+                            <line x1="20" y1="50" x2="10" y2="50"/>
+                            <line x1="100" y1="50" x2="110" y2="50"/>
+                            <line x1="30" y1="20" x2="20" y2="10"/>
+                            <line x1="90" y1="80" x2="100" y2="90"/>
+                        </g>
+                        <text x="60" y="54" fill="#78350f" font-size="11" font-weight="900" text-anchor="middle">SOL</text>
+                        <text x="60" y="96" fill="#fbbf24" font-size="9" font-weight="bold" text-anchor="middle">Fusión Nuclear</text>
+
+                        <!-- Solar Rays -->
+                        <path d="M 95 60 L 170 90" stroke="#fef08a" stroke-width="3" stroke-dasharray="4" marker-end="url(#arrYellow)"/>
+                        <path d="M 90 75 L 240 140" stroke="#fef08a" stroke-width="3" stroke-dasharray="4" marker-end="url(#arrYellow)"/>
+                        <path d="M 70 90 L 330 150" stroke="#fef08a" stroke-width="3" stroke-dasharray="4" marker-end="url(#arrYellow)"/>
+
+                        <defs>
+                            <marker id="arrYellow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#fef08a" />
+                            </marker>
+                        </defs>
+
+                        <!-- Atmosphere band -->
+                        <path d="M 120 120 Q 250 80 380 120" fill="none" stroke="#38bdf8" stroke-width="3" stroke-dasharray="3"/>
+                        <text x="250" y="95" fill="#38bdf8" font-size="10" font-weight="bold">Atmósfera (Protección y Clima)</text>
+
+                        <!-- Ocean -->
+                        <path d="M 120 170 Q 200 150 280 170 L 280 200 L 120 200 Z" fill="#0284c7"/>
+                        <text x="200" y="185" fill="#fff" font-size="10" font-weight="bold">Océano (Evaporación)</text>
+
+                        <!-- Land & Vegetation -->
+                        <path d="M 280 170 Q 330 140 390 160 L 390 200 L 280 200 Z" fill="#15803d"/>
+                        <text x="340" y="180" fill="#fff" font-size="10" font-weight="bold">Biosfera / Fotosíntesis</text>
+                    </svg>
+                </div>
+
+                <div class="micro-read">
+                    <strong>La Fuente Primaria: Fusión Nuclear Solar:</strong><br>
+                    El Sol es una estrella ubicada a aprox. 150 millones de km. Genera energía mediante <strong>fusión nuclear</strong> en su núcleo, combinando núcleos de hidrógeno para formar helio y emitiendo <strong>radiación electromagnética</strong> en tres componentes principales:
+                    <br>• <strong>Luz visible:</strong> Detectable por el ojo humano, indispensable para la fotosíntesis.
+                    <br>• <strong>Radiación Ultravioleta (UV):</strong> Invisible, interviene en la síntesis de vitamina D y química atmosférica.
+                    <br>• <strong>Radiación Infrarroja:</strong> Se percibe directamente como calor y calienta la superficie terrestre.
+                </div>
+
+                <h3>❓ Pregunta Analítica de Predicción</h3>
+                <p>¿Qué fuente energética motoriza la evaporación del agua de los océanos, los vientos atmosféricos y la síntesis de glucosa en las plantas?</p>
+
+                <div id="optsEngage">
+                    <div class="option-card" onclick="checkEngage(1, this)">
+                        <span>A) El calor de la fricción entre las rocas del fondo marino.</span>
+                    </div>
+                    <div class="option-card" onclick="checkEngage(2, this)">
+                        <span>B) La radiación electromagnética del Sol producida por fusión nuclear.</span>
+                    </div>
+                    <div class="option-card" onclick="checkEngage(3, this)">
+                        <span>C) La energía eléctrica contenida en la atmósfera sin origen exterior.</span>
+                    </div>
+                </div>
+                <button class="btn btn-hint" onclick="useHint('Engancha: Casi todos los procesos físicos, químicos y biológicos de la superficie terrestre dependen de la energía solar recibida.')">💡 Necesito una pista</button>
+
+                <div class="feedback-box" id="fbEngage"></div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="goToStep(2)">Continuar a 2. EXPLORA ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2: EXPLORA -->
+        <div class="step-container" id="step2">
+            <div class="card">
+                <h2>2. EXPLORA: Radiación, Balance Térmico y Sistemas de la Tierra</h2>
+                
+                <div class="micro-read">
+                    <strong>Balance Radiativo Terrestre (Absorción vs Reflexión):</strong><br>
+                    No toda la radiación solar que llega a la Tierra permanece en el planeta:
+                    <br>• <strong>~30% es reflejada directamente al espacio</strong> por las nubes, la atmósfera y las superficies claras (nieve/hielo - efecto albedo).
+                    <br>• <strong>~70% es absorbida</strong> por la atmósfera, los océanos y la masa continental.
+                </div>
+
+                <h3>🌡️ El Efecto Invernadero Natural</h3>
+                <div class="sim-container">
+                    <svg viewBox="0 0 380 160" width="100%" height="160">
+                        <!-- Space background -->
+                        <rect x="0" y="0" width="380" height="40" fill="#0284c7" opacity="0.3"/>
+                        <text x="190" y="25" fill="#e0f2fe" font-size="11" font-weight="bold" text-anchor="middle">ESPACIO EXTERIOR</text>
+
+                        <!-- Greenhouse Gas Layer -->
+                        <rect x="20" y="50" width="340" height="20" fill="#f59e0b" opacity="0.5" rx="10"/>
+                        <text x="190" y="64" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">Capa de Gases de Efecto Invernadero (CO₂, CH₄, H₂O)</text>
+
+                        <!-- Earth Surface -->
+                        <rect x="0" y="120" width="380" height="40" fill="#15803d"/>
+                        <text x="190" y="145" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">SUPERFICIE TERRESTRE (Absorbe luz solar y emite Infrarrojo)</text>
+
+                        <!-- Incoming Light Arrow -->
+                        <path d="M 60 10 L 60 120" stroke="#fbbf24" stroke-width="4" marker-end="url(#arrG)"/>
+                        <!-- Reflected IR trapped arrow -->
+                        <path d="M 220 120 L 220 70 Q 240 60 260 70 L 260 120" fill="none" stroke="#ef4444" stroke-width="3" marker-end="url(#arrR)"/>
+
+                        <defs>
+                            <marker id="arrG" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24" />
+                            </marker>
+                            <marker id="arrR" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444" />
+                            </marker>
+                        </defs>
+                    </svg>
+
+                    <div style="font-size:0.85rem; color:#cbd5e1; margin-top:8px;">
+                        Sin el efecto invernadero natural, la temperatura media de la Tierra sería de aproximadamente <strong>-18 °C</strong> en lugar de los templados <strong>15 °C</strong> que permiten la vida.
+                    </div>
+                </div>
+
+                <h3>🌍 Los 4 Sistemas Interconectados de la Tierra</h3>
+                <p>Toca cada tarjeta para explorar cómo interactúan entre sí intercambiando materia y energía:</p>
+
+                <div class="system-grid">
+                    <div class="system-card selected" id="sys1" onclick="selectSystem(1)">
+                        <div style="font-size:1.5rem;">☁️</div>
+                        <strong>ATMÓSFERA</strong>
+                        <div style="font-size:0.75rem; color:var(--text-muted);">Gases (N₂, O₂, CO₂)</div>
+                    </div>
+                    <div class="system-card" id="sys2" onclick="selectSystem(2)">
+                        <div style="font-size:1.5rem;">🌊</div>
+                        <strong>HIDROSFERA</strong>
+                        <div style="font-size:0.75rem; color:var(--text-muted);">Agua (Océanos, Ríos, Vapor)</div>
+                    </div>
+                    <div class="system-card" id="sys3" onclick="selectSystem(3)">
+                        <div style="font-size:1.5rem;">⛰️</div>
+                        <strong>GEOSFERA</strong>
+                        <div style="font-size:0.75rem; color:var(--text-muted);">Suelo, Rocas y Minerales</div>
+                    </div>
+                    <div class="system-card" id="sys4" onclick="selectSystem(4)">
+                        <div style="font-size:1.5rem;">🌱</div>
+                        <strong>BIOSFERA</strong>
+                        <div style="font-size:0.75rem; color:var(--text-muted);">Conjunto de seres vivos</div>
+                    </div>
+                </div>
+
+                <div id="systemDescBox" class="micro-read" style="border-left-color: var(--secondary);">
+                    <strong>☁️ Atmósfera:</strong> Capa gaseosa que envuelve la Tierra. Absorbe radiación dañina, regula el clima mediante gases de efecto invernadero e interactúa con la hidrosfera formando nubes.
+                </div>
+
+                <h3>🧩 Actividad: Relaciona cada Elemento con su Sistema Terrestre</h3>
+                <p>Selecciona un elemento del banco y asígnalo a su casilla correspondiente:</p>
+
+                <div class="drag-bank" id="chipBankSys">
+                    <div class="chip" onclick="selectChip(this, 'Vapor de agua y Nubes')">Vapor de agua y Nubes</div>
+                    <div class="chip" onclick="selectChip(this, 'Océanos y Glaciares')">Océanos y Glaciares</div>
+                    <div class="chip" onclick="selectChip(this, 'Capa arable de Suelo')">Capa arable de Suelo</div>
+                    <div class="chip" onclick="selectChip(this, 'Bosques y Arrecifes')">Bosques y Arrecifes</div>
+                </div>
+
+                <div class="matching-grid">
+                    <div>
+                        <strong>1. Componente de la Atmósfera</strong>
+                        <div class="slot" id="slotAtm" onclick="assignSlot(this, 'Vapor de agua y Nubes')">Toca para asignar</div>
+                    </div>
+                    <div>
+                        <strong>2. Componente de la Hidrosfera</strong>
+                        <div class="slot" id="slotHid" onclick="assignSlot(this, 'Océanos y Glaciares')">Toca para asignar</div>
+                    </div>
+                    <div>
+                        <strong>3. Componente de la Geosfera</strong>
+                        <div class="slot" id="slotGeo" onclick="assignSlot(this, 'Capa arable de Suelo')">Toca para asignar</div>
+                    </div>
+                    <div>
+                        <strong>4. Componente de la Biosfera</strong>
+                        <div class="slot" id="slotBio" onclick="assignSlot(this, 'Bosques y Arrecifes')">Toca para asignar</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary" onclick="checkSystemMatching()">COMPROBAR SISTEMAS</button>
+                <button class="btn btn-hint" onclick="useHint('Explora: El agua es Hidrosfera, las nubes/aire Atmósfera, las rocas/suelo Geosfera y los organismos vivos Biosfera.')">💡 Necesito una pista</button>
+
+                <div class="feedback-box" id="fbSys"></div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goToStep(1)">⬅️ Anterior</button>
+                    <button class="btn btn-primary" onclick="goToStep(3)">Continuar a 3. COMPRENDE ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3: COMPRENDE -->
+        <div class="step-container" id="step3">
+            <div class="card">
+                <h2>3. COMPRENDE: La Gran Diferencia — Flujo de Energía vs Ciclo de la Materia</h2>
+                
+                <div class="micro-read" style="border-left-color: var(--accent); background-color: #ecfdf5;">
+                    <strong>🔑 Regla de Oro Científica de la Progresión 15:</strong><br><br>
+                    ⚡ <strong>LA ENERGÍA FLUJE:</strong> Entra de forma continua desde el Sol a los sistemas terrestres, se transforma, pasa entre organismos y finalmente <strong>se disipa de manera unidireccional como calor (energía térmica) hacia el espacio exterior</strong>. ¡La energía NO se recicla en forma circular!<br><br>
+                    ♻️ <strong>LA MATERIA CIRCULA EN CICLOS:</strong> Los átomos de agua, carbono, nitrógeno y fósforo se reutilizan una y otra vez entre la biosfera, atmósfera, hidrosfera y geosfera mediante ciclos biogeoquímicos.
+                </div>
+
+                <h3>🍃 Fotosíntesis y Transferencia Trófica en Ecosistemas</h3>
+                <p>La fotosíntesis convierte energía luminosa en energía química almacenada en la glucosa y biomasa:</p>
+
+                <div class="math-block">
+                    6 CO<sub>2</sub> + 6 H<sub>2</sub>O + Luz Solar &nbsp;➔&nbsp; C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + 6 O<sub>2</sub>
+                </div>
+
+                <h3>📉 La Regla del 10% Energético Trófico</h3>
+                <div class="sim-container">
+                    <div class="trophic-level-box">
+                        <div class="trophic-step">
+                            <span>☀️ <strong>Sol / Luz Solar</strong></span>
+                            <span class="trophic-badge" style="background:#fef3c7; color:#d97706;">Entrada Continua de Energía</span>
+                        </div>
+                        <div class="trophic-step">
+                            <span>🌱 <strong>Productores (Plantas / Algas)</strong></span>
+                            <span class="trophic-badge">10,000 Joules (Biomasa)</span>
+                        </div>
+                        <div class="trophic-step">
+                            <span>🐰 <strong>Consumidores Primarios (Herbívoros / Liebre)</strong></span>
+                            <span class="trophic-badge">1,000 Joules (10%)</span>
+                        </div>
+                        <div class="trophic-step">
+                            <span>🦊 <strong>Consumidores Secundarios (Carnívoros / Zorro)</strong></span>
+                            <span class="trophic-badge">100 Joules (10%)</span>
+                        </div>
+                    </div>
+                    <div style="font-size:0.8rem; color:#cbd5e1; margin-top:6px;">
+                        ⚠️ El 90% restante de la energía en cada nivel se disipa como <strong>calor por respiración y metabolismo</strong> hacia el entorno.
+                    </div>
+                </div>
+
+                <h3>🔄 El Ciclo del Agua Impulsado por el Sol</h3>
+                <p>La materia (moléculas de H₂O) circula continuamente entre los sistemas gracias a la energía térmica solar:</p>
+
+                <div class="micro-read">
+                    1. <strong>Evaporación:</strong> El Sol calienta océanos y ríos transformando agua líquida en vapor.<br>
+                    2. <strong>Condensación:</strong> El vapor asciende a la atmósfera fría formando nubes.<br>
+                    3. <strong>Precipitación:</strong> El agua regresa a la geosfera como lluvia o nieve.<br>
+                    4. <strong>Escurrimiento e Infiltración:</strong> Fluye por ríos y mantos acuíferos de vuelta al océano para reiniciar el ciclo.
+                </div>
+
+                <h3>⚖️ Afirmaciones de Comprobación Conceptual</h3>
+                <div id="tfContainer">
+                    <div style="margin-bottom:14px;">
+                        <p><strong>1. "La energía se recicla indefinidamente dentro de una cadena alimentaria volviendo al Sol al final."</strong></p>
+                        <button class="btn btn-secondary" style="width:auto; display:inline-block; padding:8px 16px;" onclick="checkTF(1, true)">Correcta</button>
+                        <button class="btn btn-secondary" style="width:auto; display:inline-block; padding:8px 16px;" onclick="checkTF(1, false)">Necesita Corrección</button>
+                        <div class="feedback-box" id="fbTF1"></div>
+                    </div>
+
+                    <div style="margin-bottom:14px;">
+                        <p><strong>2. "Los átomos de carbono y las moléculas de agua circulan repetidamente entre la atmósfera, biosfera y geosfera."</strong></p>
+                        <button class="btn btn-secondary" style="width:auto; display:inline-block; padding:8px 16px;" onclick="checkTF(2, true)">Correcta</button>
+                        <button class="btn btn-secondary" style="width:auto; display:inline-block; padding:8px 16px;" onclick="checkTF(2, false)">Necesita Corrección</button>
+                        <div class="feedback-box" id="fbTF2"></div>
+                    </div>
+                </div>
+
+                <button class="btn btn-hint" onclick="useHint('Comprende: La energía se transfiere en una sola dirección y parte se pierde como calor. La materia se recicla continuamente en ciclos.')">💡 Necesito una pista</button>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goToStep(2)">⬅️ Anterior</button>
+                    <button class="btn btn-primary" onclick="goToStep(4)">Continuar a 4. ORGANIZA ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 4: ORGANIZA -->
+        <div class="step-container" id="step4">
+            <div class="card">
+                <h2>4. ORGANIZA: Mapa Conceptual Táctil P15</h2>
+                <p>Organiza la red de conceptos clave de la Progresión 15. Toca un término del banco y luego su casilla correspondiente:</p>
+
+                <div class="drag-bank" id="mapBank">
+                    <div class="chip" onclick="selectMapChip(this, 'Fusión Nuclear')">Fusión Nuclear</div>
+                    <div class="chip" onclick="selectMapChip(this, 'Sistemas Terrestres')">Sistemas Terrestres</div>
+                    <div class="chip" onclick="selectMapChip(this, 'Flujo de Energía')">Flujo de Energía</div>
+                    <div class="chip" onclick="selectMapChip(this, 'Fotosíntesis')">Fotosíntesis</div>
+                    <div class="chip" onclick="selectMapChip(this, 'Ciclos de la Materia')">Ciclos de la Materia</div>
+                    <div class="chip" onclick="selectMapChip(this, 'Efecto Invernadero')">Efecto Invernadero</div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:12px; margin:16px 0;">
+                    <div class="slot" id="mapSlot1" onclick="assignMapSlot(this, 'Fusión Nuclear')">
+                        1. Proceso en el núcleo solar que genera la radiación electromagnética ➔ [ Vacío ]
+                    </div>
+                    <div class="slot" id="mapSlot2" onclick="assignMapSlot(this, 'Sistemas Terrestres')">
+                        2. Conjunto interactivo formado por Atmósfera, Hidrosfera, Geosfera y Biosfera ➔ [ Vacío ]
+                    </div>
+                    <div class="slot" id="mapSlot3" onclick="assignMapSlot(this, 'Efecto Invernadero')">
+                        3. Fenómeno natural que atrapa radiación infrarroja manteniendo los 15 °C ➔ [ Vacío ]
+                    </div>
+                    <div class="slot" id="mapSlot4" onclick="assignMapSlot(this, 'Fotosíntesis')">
+                        4. Transformación de energía solar en energía química en biomasa ➔ [ Vacío ]
+                    </div>
+                    <div class="slot" id="mapSlot5" onclick="assignMapSlot(this, 'Flujo de Energía')">
+                        5. Transferencia unidireccional que termina disipándose como calor al espacio ➔ [ Vacío ]
+                    </div>
+                    <div class="slot" id="mapSlot6" onclick="assignMapSlot(this, 'Ciclos de la Materia')">
+                        6. Reutilización circular de elementos (agua, carbono) entre sistemas ➔ [ Vacío ]
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary" onclick="checkConceptMap()">VERIFICAR MAPA CONCEPTUAL</button>
+                <button class="btn btn-hint" onclick="useHint('Organiza: La Fusión Nuclear en el Sol genera radiación, la Fotosíntesis produce biomasa y el Flujo de energía se disipa unidireccionalmente.')">💡 Necesito una pista</button>
+
+                <div class="feedback-box" id="fbMap"></div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goToStep(3)">⬅️ Anterior</button>
+                    <button class="btn btn-primary" onclick="goToStep(5)">Continuar a 5. APLICA ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 5: APLICA -->
+        <div class="step-container" id="step5">
+            <div class="card">
+                <h2>5. APLICA: Clasificación de Dinámicas y Tecnologías Solares</h2>
+                
+                <h3>⚡ Clasificación: ¿Fluye Unidireccionalmente o Circula en Ciclo?</h3>
+                <p>Asigna cada fenómeno a la categoría correcta (toca un concepto del banco y su casilla):</p>
+
+                <div class="drag-bank" id="chipBankCategory">
+                    <div class="chip" onclick="selectCatChip(this, 'Luz solar absorbedora disipada como calor')">Luz solar absorbedora disipada como calor</div>
+                    <div class="chip" onclick="selectCatChip(this, 'Evaporación, precipitación y escurrimiento de H₂O')">Evaporación, precipitación y escurrimiento de H₂O</div>
+                    <div class="chip" onclick="selectCatChip(this, 'Energía trófica perdida en la respiración del zorro')">Energía trófica perdida en la respiración del zorro</div>
+                    <div class="chip" onclick="selectCatChip(this, 'Átomos de Carbono entre CO₂ atmosférico y glucosa')">Átomos de Carbono entre CO₂ atmosférico y glucosa</div>
+                </div>
+
+                <div class="matching-grid">
+                    <div>
+                        <strong>⚡ FLUJO UNIDIRECCIONAL (Energía)</strong>
+                        <div class="slot" id="slotFlujo" onclick="assignCatSlot(this, 'Luz solar absorbedora disipada como calor')">Toca para asignar</div>
+                    </div>
+                    <div>
+                        <strong>♻️ CICLO CIRCULAR (Materia)</strong>
+                        <div class="slot" id="slotCiclo" onclick="assignCatSlot(this, 'Evaporación, precipitación y escurrimiento de H₂O')">Toca para asignar</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary" onclick="checkCategoryMatching()">COMPROBAR CLASIFICACIÓN</button>
+                <div class="feedback-box" id="fbCat"></div>
+
+                <h3>☀️ Aplicación Tecnológica: La Estufa Solar y Paneles Fotovoltaicos</h3>
+                <div class="micro-read">
+                    <strong>Práctica del Notebook — Aprovechamiento Termosolar:</strong><br>
+                    Una estufa solar aprovecha la radiación solar concentrando la luz visible e infrarroja mediante reflectores hacia un contenedor oscuro aislante. El <strong>efecto invernadero interno</strong> atrapa la radiación infrarroja emitida por la comida caliente, elevando la temperatura sin consumir combustibles fósiles.
+                </div>
+
+                <h3>🧮 Caso Práctico de Cálculo de Transferencia Energética</h3>
+                <p>En una pradera, las plantas de pasto capturan <strong>50,000 Joules</strong> de energía solar mediante fotosíntesis. Aplicando la regla estándar del <strong>10% de transferencia trófica</strong>:</p>
+
+                <div class="input-group">
+                    <label for="inputCalc1">1. ¿Cuánta energía en Joules estará disponible en la biomasa de los herbívoros (liebres)?</label>
+                    <input type="text" id="inputCalc1" placeholder="Ej. 5000">
+                </div>
+
+                <div class="input-group">
+                    <label for="inputCalc2">2. ¿Cuánta energía en Joules llegará finalmente a los carnívoros (zorros)?</label>
+                    <input type="text" id="inputCalc2" placeholder="Ej. 500">
+                </div>
+
+                <button class="btn btn-secondary" onclick="checkCalcs()">VERIFICAR CÁLCULOS</button>
+                <button class="btn btn-hint" onclick="useHint('Aplica: El 10% de 50,000 J es 5,000 J para herbívoros; el 10% de 5,000 J es 500 J para carnívoros.')">💡 Necesito una pista</button>
+
+                <div class="feedback-box" id="fbCalcs"></div>
+
+                <div class="btn-group" style="margin-top:20px;">
+                    <button class="btn btn-secondary" onclick="goToStep(4)">⬅️ Anterior</button>
+                    <button class="btn btn-primary" onclick="goToStep(6)">Continuar a 6. COMPRUEBA (TEST FINAL) ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 6: COMPRUEBA (TEST FINAL) -->
+        <div class="step-container" id="step6">
+            <div class="card">
+                <h2>6. COMPRUEBA: Evaluación Formativa P15</h2>
+                <p>Responde los <strong>10 reactivos de opción múltiple</strong> basados en las fuentes oficiales. Tu calificación se generará al entregar el test.</p>
+
+                <div class="quiz-nav-grid" id="quizNavGrid"></div>
+
+                <div id="quizQuestionBox" style="min-height: 200px;">
+                    <!-- Question rendered dynamically -->
+                </div>
+
+                <div class="btn-group" style="margin-top: 14px;">
+                    <button class="btn btn-secondary" id="btnQuizPrev" onclick="navQuiz(-1)">⬅️ Anterior</button>
+                    <button class="btn btn-secondary" id="btnQuizNext" onclick="navQuiz(1)">Siguiente ➡️</button>
+                </div>
+
+                <div style="margin-top: 20px;" id="submitQuizContainer">
+                    <button class="btn btn-primary" id="btnSubmitQuiz" onclick="submitQuiz()" disabled style="opacity: 0.5;">
+                        📋 ENTREGAR EVALUACIÓN FINAL
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 7: REFLEXIONA Y EVIDENCIA -->
+        <div class="step-container" id="step7">
+            <div class="card">
+                <h2>7. REFLEXIONA Y REGISTRO DE EVIDENCIA</h2>
+                
+                <div class="input-group">
+                    <label for="reflectionText">En tus propias palabras: ¿Qué diferencia existe entre decir que la ENERGÍA FLUJE y que la MATERIA CIRCULA EN CICLOS dentro de los sistemas de la Tierra? * (Mínimo 30 caracteres)</label>
+                    <textarea id="reflectionText" rows="3" placeholder="Escribe tu reflexión aquí..." oninput="validateReflection()"></textarea>
+                    <div id="reflectionLength" style="font-size:0.75rem; color:var(--text-muted); text-align:right;">0 / 30 caracteres</div>
+                </div>
+
+                <h3>📊 Preguntas de Percepción de Aprendizaje</h3>
+
+                <div class="input-group">
+                    <label for="perc1">1. Esta App me ayudó a comprender los contenidos de la Progresión 15:</label>
+                    <select id="perc1">
+                        <option value="4">4 — Mucho</option>
+                        <option value="3" selected>3 — Bastante</option>
+                        <option value="2">2 — Poco</option>
+                        <option value="1">1 — Nada o casi nada</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="perc2">2. Pude trabajar con esta App de manera autónoma sin necesitar al profesor a mi lado:</label>
+                    <select id="perc2">
+                        <option value="4" selected>4 — Totalmente</option>
+                        <option value="3">3 — En gran parte</option>
+                        <option value="2">2 — Con algunas dificultades</option>
+                        <option value="1">1 — Me resultó muy difícil</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary" id="btnGenerateCard" onclick="generateEvidenceCard()" disabled>
+                    🎓 GENERAR TARJETA DE EVIDENCIA FINAL
+                </button>
+            </div>
+
+            <!-- EVIDENCIA FINAL -->
+            <div id="evidenceDisplayContainer" style="display:none; margin-top:20px;">
+                <div class="evidence-card" id="evidenceCard">
+                    <div class="evidence-header">
+                        <div class="evidence-title">✅ PROGRESIÓN 15 COMPLETADA</div>
+                        <p style="font-size:0.85rem; color:var(--text-muted); margin:4px 0 0 0;">LA ENERGÍA EN LOS PROCESOS DE LA VIDA DIARIA</p>
+                        <div class="evidence-badge">FLUJO DE ENERGÍA Y CICLOS DE LA MATERIA</div>
+                    </div>
+
+                    <div class="evidence-grid">
+                        <div class="evidence-item">
+                            <label>Estudiante</label>
+                            <val id="evName">---</val>
+                        </div>
+                        <div class="evidence-item">
+                            <label>Grupo</label>
+                            <val id="evGroup">---</val>
+                        </div>
+                        <div class="evidence-item">
+                            <label>Resultado Evaluación</label>
+                            <val id="evScore">0 / 10 (0%)</val>
+                        </div>
+                        <div class="evidence-item">
+                            <label>Nivel Obtenido</label>
+                            <val id="evLevel">---</val>
+                        </div>
+                        <div class="evidence-item">
+                            <label>Tiempo Activo</label>
+                            <val id="evTime">00 min 00 s</val>
+                        </div>
+                        <div class="evidence-item">
+                            <label>Intentos Corrección (IC)</label>
+                            <val id="evErrors">0</val>
+                        </div>
+                        <div class="evidence-item">
+                            <label>Pistas Utilizadas (P)</label>
+                            <val id="evHints">0</val>
+                        </div>
+                        <div class="evidence-item">
+                            <label>Percepción Compren. / Autonom.</label>
+                            <val id="evPerception">C: 4/4 | A: 4/4</val>
+                        </div>
+                        <div class="evidence-item" style="grid-column: span 2;">
+                            <label>Fecha y Hora de Término</label>
+                            <val id="evDate">---</val>
+                        </div>
+                    </div>
+
+                    <div style="text-align:left; font-size:0.82rem; background:#f1f5f9; padding:10px; border-radius:8px; margin-bottom:12px;">
+                        <strong>SÍNTESIS DEL ESTUDIANTE:</strong>
+                        <p id="evReflection" style="font-style:italic; margin:4px 0 0 0; color:#334155;"></p>
+                    </div>
+
+                    <div class="compact-code" id="evCompactLine">
+                        📊 REGISTRO DE ACTIVIDAD: P15 | 0/10 | 0% | 00:00 | IC:0 | P:0 | C:0/4 | A:0/4
+                    </div>
+
+                    <div class="alert-whatsapp">
+                        📸 TOMA UNA CAPTURA DE ESTA PANTALLA Y ENVÍALA A TU PROFESOR POR WHATSAPP.
+                    </div>
+                </div>
+
+                <div style="margin-top:16px;">
+                    <button class="btn btn-secondary" onclick="reviewQuizAnswers()">🔍 REVISAR MIS RESPUESTAS DEL TEST</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        /* ESTADO GLOBAL DE LA APP Y ANALÍTICAS ESTANDARIZADAS */
+        let studentName = "";
+        let studentGroup = "";
+        let currentStep = 0;
+        
+        let activeTimeSeconds = 0;
+        let timerInterval = null;
+        
+        let formativeErrors = 0; // Intentos de Corrección (IC)
+        let hintsUsed = 0; // Pistas Utilizadas (P)
+
+        let selectedChipText = null;
+        let selectedChipElem = null;
+
+        let selectedCatChipText = null;
+        let selectedCatChipElem = null;
+
+        let selectedMapChipText = null;
+        let selectedMapChipElem = null;
+
+        // 10 REACTIVOS EXCLUSIVOS Y RIGUROSOS DE LA PROGRESIÓN 15
+        const quizQuestions = [
+            {
+                q: "1. De acuerdo con la Progresión 15, ¿cuál es la principal fuente externa de energía que sustenta los procesos físicos, químicos y biológicos de la Tierra?",
+                options: [
+                    "A) La combustión interna de petróleo en el manto terrestre.",
+                    "B) La energía liberada por el Sol mediante fusión nuclear.",
+                    "C) El campo magnético generado por la Luna.",
+                    "D) El calor producido por los océanos en ebullición."
+                ],
+                correct: 1,
+                exp: "La P15 establece que la energía del Sol, producida por fusión nuclear de hidrógeno en helio, es la fuente primaria para la Tierra."
+            },
+            {
+                q: "2. Al llegar a la Tierra, la radiación solar experimenta el siguiente balance aproximadamente:",
+                options: [
+                    "A) 100% es absorbida por la vegetación.",
+                    "B) Alrededor del 30% es reflejada de vuelta al espacio y el 70% es absorbida por la atmósfera, océanos y suelos.",
+                    "C) El 90% es destruida en las capas altas de la atmósfera.",
+                    "D) El 50% se convierte inmediatamente en electricidad natural."
+                ],
+                correct: 1,
+                exp: "Aproximadamente el 30% se refleja (albedo) y el 70% se absorbe regulando el clima y la energía en los sistemas."
+            },
+            {
+                q: "3. ¿Cuál es el papel fundamental del efecto invernadero natural en nuestro planeta?",
+                options: [
+                    "A) Causar la congelación total de los casquetes polares.",
+                    "B) Atrapar parte de la radiación infrarroja emitida por la superficie, manteniendo una temperatura habitable de aprox. 15 °C.",
+                    "C) Filtrar el gas nitrógeno para evitar tormentas.",
+                    "D) Aumentar la fuerza de gravedad en el ecuador."
+                ],
+                correct: 1,
+                exp: "Sin el efecto invernadero natural producido por el CO₂ y CH₄, la temperatura media terrestre caería a cerca de -18 °C."
+            },
+            {
+                q: "4. ¿Cuáles son los cuatro sistemas principales de la Tierra que interactúan intercambiando materia y energía?",
+                options: [
+                    "A) Núcleo, Manto, Caza y Magma.",
+                    "B) Atmósfera, Hidrosfera, Geosfera y Biosfera.",
+                    "C) Troposfera, Ionosfera, Litosfera y Exosfera.",
+                    "D) Sol, Luna, Estrellas y Cometas."
+                ],
+                correct: 1,
+                exp: "Los cuatro sistemas terrestres interactivos son la Atmósfera (gases), Hidrosfera (agua), Geosfera (rocas/suelos) y Biosfera (seres vivos)."
+            },
+            {
+                q: "5. ¿Cuál es la diferencia fundamental entre el comportamiento de la ENERGÍA y el de la MATERIA en la Tierra?",
+                options: [
+                    "A) La energía se recicla en círculos cerrados y la materia se destruye.",
+                    "B) La energía fluye de manera unidireccional disipándose como calor, mientras que la materia circula en ciclos biogeoquímicos.",
+                    "C) Tanto la energía como la materia se reciclan exactamente de la misma forma.",
+                    "D) Ninguna de las dos puede transformarse."
+                ],
+                correct: 1,
+                exp: "La energía ingresa del Sol y fluye disipándose finalmente como energía térmica al espacio. La materia (agua, carbono) se recicla continuamente."
+            },
+            {
+                q: "6. Mediante la fotosíntesis, los productores de la biosfera transforman:",
+                options: [
+                    "A) Calórica en energía nuclear.",
+                    "B) Energía solar luminosa en energía química almacenada en moléculas de glucosa y biomasa.",
+                    "C) Oxígeno en dióxido de carbono puro.",
+                    "D) Energía mecánica en corriente eléctrica directa."
+                ],
+                correct: 1,
+                exp: "La fotosíntesis capta radiación solar para fijar CO₂ y H₂O produciendo glucosa (energía química) y O₂."
+            },
+            {
+                q: "7. De acuerdo con la regla de la eficiencia trófica en un ecosistema, ¿qué porcentaje aproximado de energía se transfiere de un nivel al siguiente?",
+                options: [
+                    "A) 100%",
+                    "B) 50%",
+                    "C) 10%",
+                    "D) 1%"
+                ],
+                correct: 2,
+                exp: "Se estima que sólo alrededor del 10% de la energía se transfiere al nivel trófico superior; el 90% restante se disipa como calor."
+            },
+            {
+                q: "8. En el ciclo del agua, ¿qué proceso es impulsado directamente por el calentamiento de la energía solar sobre los océanos?",
+                options: [
+                    "A) Infiltración subterránea.",
+                    "B) Evaporación.",
+                    "C) Condensación en nieve.",
+                    "D) Solidificación mineral."
+                ],
+                correct: 1,
+                exp: "El calor de la radiación solar evapora el agua de océanos y lagos, dando inicio a la circulación del ciclo hidrológico."
+            },
+            {
+                q: "9. Si las plantas de una pradera fijan 50,000 J de energía biomasa, ¿cuánta energía llegará a los carnívoros secundarios (zorros)?",
+                options: [
+                    "A) 5,000 J",
+                    "B) 500 J",
+                    "C) 50 J",
+                    "D) 50,000 J"
+                ],
+                correct: 1,
+                exp: "Plantas: 50,000 J ➔ Herbívoros (10%): 5,000 J ➔ Carnívoros (10% de 5,000 J): 500 J."
+            },
+            {
+                q: "10. ¿Por qué una estufa solar puede calentar alimentos sin emitir gases contaminantes?",
+                options: [
+                    "A) Porque utiliza fuego atómico traído del espacio.",
+                    "B) Porque concentra la radiación solar visible e infrarroja y la atrapa mediante un efecto invernadero interno.",
+                    "C) Porque convierte el viento en combustible líquido.",
+                    "D) Porque congela el aire circundante."
+                ],
+                correct: 1,
+                exp: "La estufa solar refleja y atrapa la radiación infrarroja de la luz solar en una caja aislada mediante efecto invernadero."
+            }
+        ];
+
+        let quizUserAnswers = new Array(10).fill(null);
+        let currentQuizIndex = 0;
+        let quizSubmitted = false;
+
+        window.onload = function() {
+            loadSavedState();
+            renderQuizNav();
+            renderQuizQuestion(0);
+        };
+
+        function startSession() {
+            const name = document.getElementById('inputName').value.trim();
+            const group = document.getElementById('inputGroup').value.trim();
+
+            if (!name || !group) {
+                alert("Por favor escribe tu Nombre Completo y Grupo para comenzar.");
+                return;
+            }
+
+            studentName = name;
+            studentGroup = group;
+            startActiveTimer();
+            goToStep(1);
+            saveState();
+        }
+
+        function startActiveTimer() {
+            if (timerInterval) return;
+            timerInterval = setInterval(() => {
+                if (!document.hidden && currentStep > 0 && currentStep < 7) {
+                    activeTimeSeconds++;
+                    updateTimerDisplay();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(activeTimeSeconds / 60);
+            const secs = activeTimeSeconds % 60;
+            const str = `Tiempo Activo: ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            document.getElementById('timerDisplay').innerText = str;
+        }
+
+        function goToStep(stepNum) {
+            document.querySelectorAll('.step-container').forEach(el => el.classList.remove('active'));
+            document.getElementById(`step${stepNum}`).classList.add('active');
+            currentStep = stepNum;
+
+            const percent = Math.round((stepNum / 7) * 100);
+            document.getElementById('progressBar').style.width = `${percent}%`;
+            
+            const stepLabels = [
+                "Inicio", "1. Engancha", "2. Explora", "3. Comprende", 
+                "4. Organiza", "5. Aplica", "6. Comprueba", "7. Evidencia"
+            ];
+            document.getElementById('stepText').innerText = stepLabels[stepNum] || "";
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            saveState();
+        }
+
+        function useHint(hintText) {
+            hintsUsed++;
+            alert(`💡 PISTA:\n\n${hintText}`);
+            saveState();
+        }
+
+        function checkEngage(optIndex, elem) {
+            const fb = document.getElementById('fbEngage');
+            const opts = document.querySelectorAll('#optsEngage .option-card');
+            opts.forEach(o => o.classList.remove('selected', 'correct', 'incorrect'));
+            elem.classList.add('selected');
+
+            if (optIndex === 2) {
+                elem.classList.add('correct');
+                fb.className = "feedback-box show correct";
+                fb.innerHTML = "✅ <strong>¡CORRECTO!</strong> La radiación solar producida por fusión nuclear en el Sol es el motor primario que impulsa los vientos, la evaporación oceánica y la fotosíntesis.";
+            } else {
+                elem.classList.add('incorrect');
+                formativeErrors++;
+                fb.className = "feedback-box show incorrect";
+                fb.innerHTML = "❌ <strong>Necesita revisión:</strong> Los procesos superficiales y biológicos provienen de una fuente externa continua. Piensa en el astro central de nuestro sistema.";
+            }
+            saveState();
+        }
+
+        function selectSystem(sysId) {
+            document.querySelectorAll('.system-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById(`sys${sysId}`).classList.add('selected');
+
+            const descs = [
+                "<strong>☁️ Atmósfera:</strong> Capa gaseosa que envuelve la Tierra. Absorbe radiación dañina, regula el clima mediante gases de efecto invernadero e interactúa con la hidrosfera formando nubes.",
+                "<strong>🌊 Hidrosfera:</strong> Comprende toda el agua del planeta (océanos, ríos, glaciares, vapor). Absorbe calor solar y lo redistribuye a través de corrientes oceánicas y evaporación.",
+                "<strong>⛰️ Geosfera:</strong> Estructura sólida del planeta (suelos, rocas, minerales). Absorbe radiación visible emitiendo radiación infrarroja y sostiene a la biosfera.",
+                "<strong>🌱 Biosfera:</strong> Red de todos los seres vivos. Capta energía solar mediante la fotosíntesis produciendo la biomasa que alimenta las cadenas tróficas."
+            ];
+            document.getElementById('systemDescBox').innerHTML = descs[sysId - 1];
+        }
+
+        function selectChip(elem, text) {
+            document.querySelectorAll('#chipBankSys .chip').forEach(c => c.classList.remove('selected'));
+            elem.classList.add('selected');
+            selectedChipText = text;
+            selectedChipElem = elem;
+        }
+
+        function assignSlot(slotElem, expectedVal) {
+            if (!selectedChipText) {
+                alert("Primero toca un elemento del banco superior.");
+                return;
+            }
+            slotElem.innerText = selectedChipText;
+            slotElem.dataset.userVal = selectedChipText;
+            slotElem.dataset.expectedVal = expectedVal;
+            slotElem.classList.add('filled');
+        }
+
+        function checkSystemMatching() {
+            const slots = [
+                document.getElementById('slotAtm'),
+                document.getElementById('slotHid'),
+                document.getElementById('slotGeo'),
+                document.getElementById('slotBio')
+            ];
+
+            let allCorrect = true;
+            slots.forEach(s => {
+                if (s.dataset.userVal === s.dataset.expectedVal) {
+                    s.className = "slot filled correct-slot";
+                } else {
+                    s.className = "slot filled incorrect-slot";
+                    allCorrect = false;
+                }
+            });
+
+            const fb = document.getElementById('fbSys');
+            if (allCorrect) {
+                fb.className = "feedback-box show correct";
+                fb.innerHTML = "✅ <strong>¡Excelente!</strong> Has asociado correctamente cada componente con su correspondiente sistema terrestre.";
+            } else {
+                formativeErrors++;
+                fb.className = "feedback-box show incorrect";
+                fb.innerHTML = "❌ <strong>Hay casillas incorrectas:</strong> Revisa las marcadas en rojo y vuelve a intentar.";
+            }
+            saveState();
+        }
+
+        function checkTF(qNum, userChoice) {
+            const fb = document.getElementById(`fbTF${qNum}`);
+            if (qNum === 1) {
+                if (userChoice === false) {
+                    fb.className = "feedback-box show correct";
+                    fb.innerHTML = "✅ <strong>¡Correcto!</strong> Necesita corrección. La energía NO se recicla en forma circular; fluye en una sola dirección y se disipa como calor (energía térmica) hacia el espacio.";
+                } else {
+                    formativeErrors++;
+                    fb.className = "feedback-box show incorrect";
+                    fb.innerHTML = "❌ <strong>Incorrecto:</strong> La energía no regresa al Sol. Recuerda la diferencia: la energía fluye y se disipa; la materia es la que circula en ciclos.";
+                }
+            } else if (qNum === 2) {
+                if (userChoice === true) {
+                    fb.className = "feedback-box show correct";
+                    fb.innerHTML = "✅ <strong>¡Correcto!</strong> Los átomos de agua y carbono circulan repetidamente a través de los ciclos biogeoquímicos sin destruirse.";
+                } else {
+                    formativeErrors++;
+                    fb.className = "feedback-box show incorrect";
+                    fb.innerHTML = "❌ <strong>Revisa la afirmación:</strong> La materia (como H₂O y Carbono) se reutiliza continuamente entre organismos, suelos, ríos y atmósfera.";
+                }
+            }
+            saveState();
+        }
+
+        function selectMapChip(elem, text) {
+            document.querySelectorAll('#mapBank .chip').forEach(c => c.classList.remove('selected'));
+            elem.classList.add('selected');
+            selectedMapChipText = text;
+            selectedMapChipElem = elem;
+        }
+
+        function assignMapSlot(slotElem, expectedText) {
+            if (!selectedMapChipText) {
+                alert("Primero selecciona un concepto del banco superior.");
+                return;
+            }
+            slotElem.innerText = `${slotElem.innerText.split('➔')[0]} ➔ [ ${selectedMapChipText} ]`;
+            slotElem.dataset.userVal = selectedMapChipText;
+            slotElem.dataset.expectedVal = expectedText;
+            slotElem.classList.add('filled');
+        }
+
+        function checkConceptMap() {
+            let correctCount = 0;
+            for (let i = 1; i <= 6; i++) {
+                const slot = document.getElementById(`mapSlot${i}`);
+                if (slot.dataset.userVal === slot.dataset.expectedVal) {
+                    slot.className = "slot filled correct-slot";
+                    correctCount++;
+                } else {
+                    slot.className = "slot filled incorrect-slot";
+                }
+            }
+
+            const fb = document.getElementById('fbMap');
+            if (correctCount === 6) {
+                fb.className = "feedback-box show correct";
+                fb.innerHTML = "✅ <strong>¡Mapa Conceptual Impecable!</strong> Has integrado perfectamente los conceptos de fusión solar, sistemas de la Tierra, efecto invernadero, fotosíntesis, flujo de energía y ciclos de la materia.";
+            } else {
+                formativeErrors++;
+                fb.className = "feedback-box show incorrect";
+                fb.innerHTML = `⚠️ <strong>Has acertado ${correctCount} de 6.</strong> Ajusta las casillas marcadas en rojo para completar la red.`;
+            }
+            saveState();
+        }
+
+        function selectCatChip(elem, text) {
+            document.querySelectorAll('#chipBankCategory .chip').forEach(c => c.classList.remove('selected'));
+            elem.classList.add('selected');
+            selectedCatChipText = text;
+            selectedCatChipElem = elem;
+        }
+
+        function assignCatSlot(slotElem, expectedVal) {
+            if (!selectedCatChipText) {
+                alert("Primero toca una opción del banco.");
+                return;
+            }
+            slotElem.innerText = selectedCatChipText;
+            slotElem.dataset.userVal = selectedCatChipText;
+            slotElem.dataset.expectedVal = expectedVal;
+            slotElem.classList.add('filled');
+        }
+
+        function checkCategoryMatching() {
+            const slots = [
+                document.getElementById('slotFlujo'),
+                document.getElementById('slotCiclo')
+            ];
+
+            let allCorrect = true;
+            slots.forEach(s => {
+                if (s.dataset.userVal === s.dataset.expectedVal) {
+                    s.className = "slot filled correct-slot";
+                } else {
+                    s.className = "slot filled incorrect-slot";
+                    allCorrect = false;
+                }
+            });
+
+            const fb = document.getElementById('fbCat');
+            if (allCorrect) {
+                fb.className = "feedback-box show correct";
+                fb.innerHTML = "✅ <strong>¡Excelente!</strong> Has distinguido correctamente el flujo unidireccional de la energía de la circulación en ciclo de la materia.";
+            } else {
+                formativeErrors++;
+                fb.className = "feedback-box show incorrect";
+                fb.innerHTML = "❌ <strong>Revisa tu asignación:</strong> La energía disipada como calor fluye; el agua y el carbono reciclan sus átomos en ciclos.";
+            }
+            saveState();
+        }
+
+        function checkCalcs() {
+            const v1 = document.getElementById('inputCalc1').value.trim();
+            const v2 = document.getElementById('inputCalc2').value.trim();
+            const fb = document.getElementById('fbCalcs');
+
+            const ok1 = (v1 === "5000" || v1 === "5000j" || v1 === "5,000");
+            const ok2 = (v2 === "500" || v2 === "500j");
+
+            if (ok1 && ok2) {
+                fb.className = "feedback-box show correct";
+                fb.innerHTML = "✅ <strong>¡Cálculos Correctos!</strong><br>• Herbívoros: 10% de 50,000 J = <strong>5,000 Joules</strong>.<br>• Carnívoros: 10% de 5,000 J = <strong>500 Joules</strong>. El 90% restante se disipó como calor metabólico.";
+            } else {
+                formativeErrors++;
+                fb.className = "feedback-box show incorrect";
+                fb.innerHTML = "❌ <strong>Revisa tus cálculos:</strong> Aplica el 10% dividiendo entre 10 en cada paso secuencial (50,000 ➔ 5,000 ➔ 500).";
+            }
+            saveState();
+        }
+
+        function renderQuizNav() {
+            const grid = document.getElementById('quizNavGrid');
+            grid.innerHTML = "";
+            for (let i = 0; i < 10; i++) {
+                const btn = document.createElement('button');
+                btn.className = `quiz-nav-btn ${i === currentQuizIndex ? 'active' : ''} ${quizUserAnswers[i] !== null ? 'answered' : ''}`;
+                btn.innerText = i + 1;
+                btn.onclick = () => {
+                    currentQuizIndex = i;
+                    renderQuizQuestion(i);
+                    renderQuizNav();
+                };
+                grid.appendChild(btn);
+            }
+
+            const allAnswered = quizUserAnswers.every(a => a !== null);
+            const submitBtn = document.getElementById('btnSubmitQuiz');
+            if (allAnswered && !quizSubmitted) {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+            }
+        }
+
+        function renderQuizQuestion(idx) {
+            const box = document.getElementById('quizQuestionBox');
+            const qData = quizQuestions[idx];
+
+            let html = `<h3>${qData.q}</h3><div style="margin-top:12px;">`;
+
+            qData.options.forEach((optText, optIdx) => {
+                let isSelected = quizUserAnswers[idx] === optIdx;
+                let cardClass = "option-card";
+                if (isSelected) cardClass += " selected";
+
+                if (quizSubmitted) {
+                    if (optIdx === qData.correct) cardClass += " correct";
+                    else if (isSelected) cardClass += " incorrect";
+                }
+
+                html += `
+                    <div class="${cardClass}" onclick="selectQuizOption(${idx}, ${optIdx})">
+                        <span>${optText}</span>
+                    </div>
+                `;
+            });
+
+            html += `</div>`;
+
+            if (quizSubmitted) {
+                html += `
+                    <div class="feedback-box show correct" style="margin-top:12px;">
+                        💡 <strong>Explicación:</strong> ${qData.exp}
+                    </div>
+                `;
+            }
+
+            box.innerHTML = html;
+
+            document.getElementById('btnQuizPrev').disabled = (idx === 0);
+            document.getElementById('btnQuizNext').disabled = (idx === 9);
+        }
+
+        function selectQuizOption(qIdx, optIdx) {
+            if (quizSubmitted) return;
+            quizUserAnswers[qIdx] = optIdx;
+            renderQuizQuestion(qIdx);
+            renderQuizNav();
+            saveState();
+        }
+
+        function navQuiz(dir) {
+            currentQuizIndex += dir;
+            if (currentQuizIndex < 0) currentQuizIndex = 0;
+            if (currentQuizIndex > 9) currentQuizIndex = 9;
+            renderQuizQuestion(currentQuizIndex);
+            renderQuizNav();
+        }
+
+        function submitQuiz() {
+            quizSubmitted = true;
+            let correctCount = 0;
+            quizQuestions.forEach((q, i) => {
+                if (quizUserAnswers[i] === q.correct) correctCount++;
+            });
+
+            renderQuizQuestion(currentQuizIndex);
+            renderQuizNav();
+            document.getElementById('btnSubmitQuiz').disabled = true;
+
+            alert(`✅ EVALUACIÓN P15 FINALIZADA\n\nResultado: ${correctCount} / 10 aciertos (${correctCount * 10}%).`);
+            goToStep(7);
+        }
+
+        function validateReflection() {
+            const text = document.getElementById('reflectionText').value;
+            const len = text.length;
+            document.getElementById('reflectionLength').innerText = `${len} / 30 caracteres`;
+            const btn = document.getElementById('btnGenerateCard');
+            btn.disabled = (len < 30);
+        }
+
+        function getQualitativeLevel(score) {
+            if (score === 10) return "Excelente";
+            if (score >= 8) return "Muy buen dominio";
+            if (score === 7) return "Buen dominio";
+            if (score === 6) return "En proceso";
+            return "Requiere reforzamiento";
+        }
+
+        function generateEvidenceCard() {
+            let correctCount = 0;
+            quizQuestions.forEach((q, i) => {
+                if (quizUserAnswers[i] === q.correct) correctCount++;
+            });
+
+            const scorePercent = correctCount * 10;
+            const mins = Math.floor(activeTimeSeconds / 60);
+            const secs = activeTimeSeconds % 60;
+            const timeStr = `${mins} min ${secs.toString().padStart(2, '0')} s`;
+            const timeCompact = `${mins}:${secs.toString().padStart(2, '0')}`;
+
+            const perc1 = document.getElementById('perc1').value;
+            const perc2 = document.getElementById('perc2').value;
+            const reflection = document.getElementById('reflectionText').value;
+
+            document.getElementById('evName').innerText = studentName;
+            document.getElementById('evGroup').innerText = studentGroup;
+            document.getElementById('evScore').innerText = `${correctCount} / 10 (${scorePercent}%)`;
+            document.getElementById('evLevel').innerText = getQualitativeLevel(correctCount);
+            document.getElementById('evTime').innerText = timeStr;
+            document.getElementById('evErrors').innerText = formativeErrors;
+            document.getElementById('evHints').innerText = hintsUsed;
+            document.getElementById('evPerception').innerText = `C: ${perc1}/4 | A: ${perc2}/4`;
+            
+            const now = new Date();
+            document.getElementById('evDate').innerText = now.toLocaleString('es-MX');
+            document.getElementById('evReflection').innerText = `"${reflection}"`;
+
+            // LÍNEA COMPACTA ESTÁNDAR EXACTA (P11 - P16)
+            const compactLine = `📊 REGISTRO DE ACTIVIDAD: P15 | ${correctCount}/10 | ${scorePercent}% | ${timeCompact} | IC:${formativeErrors} | P:${hintsUsed} | C:${perc1}/4 | A:${perc2}/4`;
+            document.getElementById('evCompactLine').innerText = compactLine;
+
+            document.getElementById('evidenceDisplayContainer').style.display = 'block';
+            window.scrollTo({ top: document.getElementById('evidenceDisplayContainer').offsetTop, behavior: 'smooth' });
+            saveState();
+        }
+
+        function reviewQuizAnswers() {
+            goToStep(6);
+        }
+
+        function saveState() {
+            try {
+                const data = {
+                    studentName,
+                    studentGroup,
+                    currentStep,
+                    activeTimeSeconds,
+                    formativeErrors,
+                    hintsUsed,
+                    quizUserAnswers,
+                    quizSubmitted,
+                    reflectionText: document.getElementById('reflectionText')?.value || "",
+                    perc1: document.getElementById('perc1')?.value || "3",
+                    perc2: document.getElementById('perc2')?.value || "4"
+                };
+                localStorage.setItem('progresion15_app_state', JSON.stringify(data));
+            } catch(e) {
+                console.warn("LocalStorage no disponible, funcionando en memoria de sesión.", e);
+            }
+        }
+
+        function loadSavedState() {
+            try {
+                const saved = localStorage.getItem('progresion15_app_state');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    if (data.studentName) {
+                        studentName = data.studentName;
+                        document.getElementById('inputName').value = studentName;
+                    }
+                    if (data.studentGroup) {
+                        studentGroup = data.studentGroup;
+                        document.getElementById('inputGroup').value = studentGroup;
+                    }
+                    if (data.activeTimeSeconds) activeTimeSeconds = data.activeTimeSeconds;
+                    if (data.formativeErrors) formativeErrors = data.formativeErrors;
+                    if (data.hintsUsed) hintsUsed = data.hintsUsed;
+                    if (data.quizUserAnswers) quizUserAnswers = data.quizUserAnswers;
+                    if (data.quizSubmitted) quizSubmitted = data.quizSubmitted;
+                    if (data.reflectionText) document.getElementById('reflectionText').value = data.reflectionText;
+
+                    updateTimerDisplay();
+                }
+            } catch(e) {
+                console.warn("Error al cargar estado almacenado:", e);
+            }
+        }
+    </script>
+</body>
+</html>
